@@ -8,6 +8,6 @@ Default messages have their own color and display time length to account for mes
 
 The license for this code is in the ino file. 
 
-*Enjoy!*
+**Enjoy!**
 
 Eric

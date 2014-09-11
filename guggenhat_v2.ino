@@ -21,12 +21,12 @@
  - fixed a color setting defect that caused memory corrpution
  - added a command to the bluetooth commands to redisplay the default messages
  
-Desired Enhancements
-- more eye candy
-- ability to interrupt eye candy with a bluetooth sent message
-- ability to get battery level via bluetooth, maybe even display it on the hat
-
---------------------------------------------------------------------------*/
+ Desired Enhancements
+ - more eye candy
+ - ability to interrupt eye candy with a bluetooth sent message
+ - ability to get battery level via bluetooth, maybe even display it on the hat
+ 
+ --------------------------------------------------------------------------*/
 
 #include <SPI.h>
 #include <Adafruit_BLE_UART.h>
@@ -61,6 +61,7 @@ unsigned long prevFrameTime = 0L;             // For animation timing
 #define FPS 20                                // Scrolling speed
 
 // EFP Custom stuff  ----------------------------------------------------------------
+boolean displayEyeCandy = true; // only at the startup of the hat, can't send bluretooth lessage t
 boolean displayDefaultMsg = true;  
 boolean thisDefaultMsgAlreadyDisplayed = false;
 int currentDefaultMsg = 0;  // start at the first message
@@ -75,25 +76,25 @@ unsigned long msg_ms[5];      // the length of time in MS to display each messag
 // this is where you set your default messages
 void setUpDefaultMsg() {
   default_msgs[0] = "1086"; //4
-   default_msgs[1] = "BLUE CHEESE"; //11
-   default_msgs[2] = "FIRST ROBOTICS"; //14
-   default_msgs[3] = "RVA MAKERFEST"; //13 
-   default_msgs[4] = "SCIENCE MATTERS"; //15 
-   msg_len[0] = 4;
-   msg_len[1] = 11;
-   msg_len[2] = 14;
-   msg_len[3] = 14;
-   msg_len[4] = 15; 
-   msg_color[0] = "#FFFFFF";
-   msg_color[1] = "#0000FF";
-   msg_color[2] = "#FFFF00";
-   msg_color[3] = "#00FF00";
-   msg_color[4] = "#FFFFFF";  
-   msg_ms[0] = 3000;
-   msg_ms[1] = 5000;
-   msg_ms[2] = 6000;
-   msg_ms[3] = 5500;
-   msg_ms[4] = 6200; 
+  default_msgs[1] = "BLUE CHEESE"; //11
+  default_msgs[2] = "FIRST ROBOTICS"; //14
+  default_msgs[3] = "RVA MAKERFEST"; //13 
+  default_msgs[4] = "SCIENCE MATTERS"; //15 
+  msg_len[0] = 4;
+  msg_len[1] = 11;
+  msg_len[2] = 14;
+  msg_len[3] = 14;
+  msg_len[4] = 15; 
+  msg_color[0] = "#FFFFFF";
+  msg_color[1] = "#0000FF";
+  msg_color[2] = "#FFFF00";
+  msg_color[3] = "#00FF00";
+  msg_color[4] = "#FFFFFF";  
+  msg_ms[0] = 3000;
+  msg_ms[1] = 5000;
+  msg_ms[2] = 6000;
+  msg_ms[3] = 5500;
+  msg_ms[4] = 6200; 
 }
 
 // BLUEFRUIT LE STUFF-------------------------------------------------------
@@ -308,27 +309,24 @@ void loop() {
     }
   }
 
-  if (true == false) { 
+  if (displayEyeCandy == true) { 
     // Eye Candy at start of default messages
-    // curently limited, bluetooth commands can't be captured when eye candy is displayed
-    //EFP default graphics
-
-    /*
+    // curently limited, bluetooth commands can't be captured when eye candy is displayed    
     for (int i=0; i<5; ++i) {
-     displayRowsAround(30);
-     }
-     
-     for (int i=0; i<5; ++i) {
-     displayColsAround_2(30);
-     }
-     
-     for (int i=0; i<12; ++i) {
-     displayGraphics_1(80);
-     }
-     
-     */
+      displayRowsAround(30);
+    }
+
+    for (int i=0; i<5; ++i) {
+      displayColsAround_2(30);
+    }
+
+    for (int i=0; i<12; ++i) {
+      displayGraphics_1(80);
+    } 
+   
+   displayEyeCandy = false; 
   }
-  // new version
+
   if (displayDefaultMsg == true) {
     if (thisDefaultMsgAlreadyDisplayed == false){
       startDefaultMsgMs = millis();
@@ -356,8 +354,8 @@ void loop() {
       }
     } 
   }
-  
-  
+
+
   if((t - prevFrameTime) >= (1000L / FPS)) { // Handle scrolling
     matrix.fillScreen(0);
     matrix.setCursor(msgX, 0);
@@ -367,5 +365,6 @@ void loop() {
     prevFrameTime = t;
   }
 }
+
 
 
