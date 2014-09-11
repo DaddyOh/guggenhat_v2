@@ -1,4 +1,4 @@
-A modification of the Adafruit [guggenHat](http://example.com/ "Adafruit guggenHat project") project code.  
+A modification of the Adafruit [guggenHat](https://learn.adafruit.com/guggenhat-bluetooth-le-wearable-neopixel-marquee-scrolling-led-hat-display/overview "Adafruit guggenHat project") project code.  
 
 Now you can add default messages for the hat to display and as well some eye candy display on startup. 
 
