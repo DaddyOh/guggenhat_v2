@@ -66,16 +66,19 @@ boolean displayDefaultMsg = true;
 boolean thisDefaultMsgAlreadyDisplayed = false;
 int currentDefaultMsg = 0;  // start at the first message
 unsigned long startDefaultMsgMs = 0;
-uint8_t defaultMsgCt = 5;     // set this to the count of default messages
+
+#define START_DELAY_MS 5000
+#define MSGCT 3
+uint8_t defaultMsgCt = MSGCT;     // set this to the count of default messages
 /* edit the array lengths to show the default message count */
-char *default_msgs[5];        // the default messages in an array, must be 20 character long or less
-uint8_t msg_len[5];           // array of default message lengths
-char *msg_color[5];           // array of msg colors, each default message can have a different color
-unsigned long msg_ms[5];      // the length of time in MS to display each message, hand tweak this.
+char *default_msgs[MSGCT];        // the default messages in an array, must be 20 character long or less
+uint8_t msg_len[MSGCT];           // array of default message lengths
+char *msg_color[MSGCT];           // array of msg colors, each default message can have a different color
+unsigned long msg_ms[MSGCT];      // the length of time in MS to display each message, hand tweak this.
 
 // this is where you set your default messages
 void setUpDefaultMsg() {
-  default_msgs[0] = "1086"; //4
+  /*default_msgs[0] = "1086"; //4
   default_msgs[1] = "BLUE CHEESE"; //11
   default_msgs[2] = "FIRST ROBOTICS"; //14
   default_msgs[3] = "RVA MAKERFEST"; //13 
@@ -94,7 +97,21 @@ void setUpDefaultMsg() {
   msg_ms[1] = 5000;
   msg_ms[2] = 6000;
   msg_ms[3] = 5500;
-  msg_ms[4] = 6200; 
+  msg_ms[4] = 6200; */
+  
+  default_msgs[0] = "1086"; //4
+  default_msgs[1] = "BLUE CHEESE"; //11
+  default_msgs[2] = "RVA MAKERFEST"; //13 
+  msg_len[0] = 4;
+  msg_len[1] = 11;
+  msg_len[2] = 14; 
+  msg_color[0] = "#FFFFFF";
+  msg_color[1] = "#0000FF";
+  msg_color[2] = "#00FF00";  
+  msg_ms[0] = 3000;
+  msg_ms[1] = 5000;
+  msg_ms[2] = 5500; 
+  
 }
 
 // BLUEFRUIT LE STUFF-------------------------------------------------------
@@ -194,7 +211,6 @@ void pixelCol(unsigned int col, unsigned int startRow, unsigned int endRow, byte
   }
 }
 
-
 void displayRowsAround(unsigned long delayMs){
   for (unsigned int row=0; row < NEO_HEIGHT; ++row){
     matrix.fillScreen(0);
@@ -228,6 +244,7 @@ void setup() {
   // EFP
   setUpDefaultMsg();
 
+  delay(START_DELAY_MS);
 }
 
 void loop() {
@@ -312,15 +329,15 @@ void loop() {
   if (displayEyeCandy == true) { 
     // Eye Candy at start of default messages
     // curently limited, bluetooth commands can't be captured when eye candy is displayed    
-    for (int i=0; i<5; ++i) {
+    for (int i=0; i<3; ++i) {
       displayRowsAround(30);
     }
 
-    for (int i=0; i<5; ++i) {
+    for (int i=0; i<3; ++i) {
       displayColsAround_2(30);
     }
 
-    for (int i=0; i<12; ++i) {
+    for (int i=0; i<5; ++i) {
       displayGraphics_1(80);
     } 
    
